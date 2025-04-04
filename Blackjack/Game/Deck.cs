@@ -15,7 +15,7 @@ namespace Blackjack.Game
             for (int i = 1; i < 52; i++)
             {
                 suit++; facevalue++;
-                Card card = new Card((Card.Suits)suit, (Card.FaceValues)facevalue);
+                Card card = new Card((Card.Suits)suit, (Card.FaceValues)facevalue, (int)(Card.FaceValues)facevalue);
                 deck.Add(card);
                 if(facevalue == 13)
                 {

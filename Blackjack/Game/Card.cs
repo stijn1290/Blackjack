@@ -10,8 +10,8 @@ namespace Blackjack.Game
     {
        public enum FaceValues
         {
-            aas = 11,
-            twee = 2,
+            aas = 1,
+            twee,
             drie,
             vier,
             vijf,
@@ -20,9 +20,9 @@ namespace Blackjack.Game
             acht,
             negen,
             tien,
-            boer = 10,
-            vrouw = 10,
-            koning = 10,
+            boer,
+            vrouw,
+            koning,
         }
         public enum Suits
         {
@@ -31,15 +31,20 @@ namespace Blackjack.Game
             klaveren,
             ruiten
         }
-        private Suits suit; private FaceValues facevalue;
-        public Card(Card.Suits suit, Card.FaceValues facevalue)
+        private Suits suit; private FaceValues facevalue; private int value;
+        public Card(Card.Suits suit, Card.FaceValues facevalue, int value)
         {
             this.suit = suit;
             this.facevalue = facevalue;
+            this.value = value;
         }
         public string toString()
         {
             return $"{this.suit} {this.facevalue}";
+        }
+        public int getValue()
+        {
+            return value;
         }
     }
 }

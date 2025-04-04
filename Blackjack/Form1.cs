@@ -5,8 +5,9 @@ namespace Blackjack
     public partial class Form1 : Form
     {
         private Deck deck = new Deck();
-        private bool divideCardInstance = false;
-        private Card pulledCard; private Player player1; private Player player2; private Player player3; private Player player4;
+        private int playerIndex = 0;
+        private bool divideCardInstance = false; private bool firstRoundPass = false;
+        private Card pulledCard; private Player player1 = null; private Player player2 = null; private Player player3 = null; private Player player4 = null;
         private Player dealer = new Player(true);
         public Form1()
         {
@@ -16,13 +17,14 @@ namespace Blackjack
         private void Form1_Load(object sender, EventArgs e)
         {
             button1.Hide();
-            label3.Hide();
+            pictureBox5.Hide();
             label2.Hide();
-            label5.Hide();
-            label6.Hide();
-            label7.Hide();
-            label8.Hide();
+            pictureBox1.Hide();
+            pictureBox2.Hide();
+            pictureBox3.Hide();
+            pictureBox4.Hide();
             button6.Hide();
+            button8.Hide();
             label9.Hide();
             button7.Hide();
             label10.Hide();
@@ -30,6 +32,12 @@ namespace Blackjack
             label12.Hide();
             label13.Hide();
             label14.Hide();
+            label3.Hide();
+            label5.Hide();
+            label6.Hide();
+            label7.Hide();
+            label8.Hide();
+            label15.Hide();
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -46,16 +54,13 @@ namespace Blackjack
             divideCard();
         }
 
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button3_Click(object sender, EventArgs e)
         {
             if (divideCardInstance)
             {
                 player2.addCard(pulledCard);
+                player2.setScore(pulledCard.getValue());
+                label5.Text = $"{player2.getScore()}";
                 label11.Show();
                 label11.Text = player2.getCards();
                 label2.Hide();
@@ -67,7 +72,10 @@ namespace Blackjack
                 player1 = playerFirst;
                 Player playerSecond = new Player(false);
                 player2 = playerSecond;
-                label5.Show(); label6.Show();
+                pictureBox1.Show(); pictureBox2.Show();
+                label5.Show(); label3.Show();
+                label3.Text = $"{player1.getScore()}";
+                label5.Text = $"{player2.getScore()}";
                 gameStart();
             }
         }
@@ -82,6 +90,8 @@ namespace Blackjack
             if (divideCardInstance)
             {
                 player1.addCard(pulledCard);
+                player1.setScore(pulledCard.getValue());
+                label3.Text = $"{player1.getScore()}";
                 label10.Show();
                 label10.Text = player1.getCards();
                 label2.Hide();
@@ -91,7 +101,9 @@ namespace Blackjack
             {
                 Player playerFirst = new Player(false);
                 player1 = playerFirst;
-                label5.Show();
+                pictureBox1.Show();
+                label3.Show();
+                label3.Text = $"{player1.getScore()}";
                 gameStart();
             }
         }
@@ -101,6 +113,8 @@ namespace Blackjack
             if (divideCardInstance)
             {
                 player3.addCard(pulledCard);
+                player3.setScore(pulledCard.getValue());
+                label6.Text = $"{player3.getScore()}";
                 label12.Show();
                 label12.Text = player3.getCards();
                 label2.Hide();
@@ -114,7 +128,11 @@ namespace Blackjack
                 player2 = playerSecond;
                 Player playerThird = new Player(false);
                 player3 = playerThird;
-                label5.Show(); label6.Show(); label7.Show();
+                pictureBox1.Show(); pictureBox2.Show(); pictureBox3.Show();
+                label5.Show(); label3.Show(); label6.Show();
+                label3.Text = $"{player1.getScore()}";
+                label5.Text = $"{player2.getScore()}";
+                label6.Text = $"{player3.getScore()}";
                 gameStart();
             }
         }
@@ -124,6 +142,8 @@ namespace Blackjack
             if (divideCardInstance)
             {
                 player4.addCard(pulledCard);
+                player4.setScore(pulledCard.getValue());
+                label7.Text = $"{player4.getScore()}";
                 label13.Show();
                 label13.Text = player4.getCards();
                 label2.Hide();
@@ -139,21 +159,15 @@ namespace Blackjack
                 player3 = playerThird;
                 Player playerFour = new Player(false);
                 player4 = playerFour;
-                label5.Show(); label6.Show(); label7.Show(); label8.Show();
+                pictureBox1.Show(); pictureBox2.Show(); pictureBox3.Show(); pictureBox4.Show();
+                label5.Show(); label3.Show(); label6.Show(); label7.Show();
+                label3.Text = $"{player1.getScore()}";
+                label5.Text = $"{player2.getScore()}";
+                label6.Text = $"{player3.getScore()}";
+                label7.Text = $"{player4.getScore()}";
                 gameStart();
             }
         }
-
-        private void label5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void label7_Click(object sender, EventArgs e)
         {
 
@@ -167,7 +181,9 @@ namespace Blackjack
         {
             label4.Hide();
             button2.Hide(); button3.Hide(); button4.Hide(); button5.Hide();
-            label3.Show(); button1.Show(); button6.Show();
+            pictureBox5.Show(); button1.Show(); button6.Show(); label8.Show();
+            button8.Show();
+            label8.Text = $"{dealer.getScore()}";
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -183,6 +199,8 @@ namespace Blackjack
         private void button7_Click(object sender, EventArgs e)
         {
             dealer.addCard(pulledCard);
+            dealer.setScore(pulledCard.getValue());
+            label8.Text = $"{dealer.getScore()}";
             label14.Show();
             label14.Text = dealer.getCards();
             label2.Hide();
@@ -215,6 +233,81 @@ namespace Blackjack
         }
 
         private void label14_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox2_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (!firstRoundPass)
+            {
+                if (button8.Text == "Ja")
+                {
+                    firstRoundPass = true;
+                    roundPlayer();
+                }
+                label15.Show();
+                button8.Text = "Ja";
+            }
+            else
+            {
+                roundPlayer();
+            }
+        }
+        public void roundPlayer()
+        {
+            button8.Text = "Bevestig keuze";
+            switch (playerIndex)
+            {
+                case 1:
+                    label15.Text = player1.roundSimulation("player 1");
+                    label10.Text = $"{player1.getCards()}";
+                    label3.Text = $"{player1.getScore()}";
+                    break;
+                case 2:
+                    label15.Text = player2.roundSimulation("player 2");
+                    label11.Text = $"{player2.getCards()}";
+                    label5.Text = $"{player2.getScore()}";
+                    break;
+                case 3:
+                    label15.Text = player3.roundSimulation("player 3");
+                    button8.Text = "Confirm choise";
+                    label12.Text = $"{player3.getCards()}";
+                    label6.Text = $"{player3.getScore()}";
+                    break;
+                case 4:
+                    label15.Text = player4.roundSimulation("player 4");
+                    button8.Text = "Confirm choise";
+                    label13.Text = $"{player4.getCards()}";
+                    label7.Text = $"{player4.getScore()}";
+                    break;
+                default:
+                    break;
+            }
+            playerIndex++;
+        }
+
+        private void label15_Click(object sender, EventArgs e)
         {
 
         }
