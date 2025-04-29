@@ -102,5 +102,35 @@ namespace Blackjack.Game
             setStand(false);
             return roundResult;
         }
+        public bool playerWon()
+        {
+            while (getScore() != 21 )
+            {
+                return false;
+            }
+            if (getScore() == 21)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool playerLost()
+        {
+            while (getScore() <= 21)
+            {
+                return false;
+            }
+            if (getScore() >= 22)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
