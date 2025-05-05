@@ -73,30 +73,17 @@ namespace Blackjack.Game
             string roundResult = "";
             if (!stand)
             {
-                if (score <= 11)
+                if (score <= 10)
+                {
+                    doubling();
+                    roundResult = $"{player} choose doubling";
+                    setStand(true);
+                }
+                else if (score <= 21)
                 {
                     hit();
                     setStand(true);
                     roundResult = $"{player} choose hit";
-                }
-                else if (score <= 17)
-                {
-                    if (getAmountOfCards() == 2)
-                    {
-                        doubling();
-                        roundResult = $"{player} choose doubling";
-                    }
-                    else
-                    {
-                        hit();
-                        roundResult = $"{player} choose hit";
-                    }
-                    setStand(true);
-                }
-                else
-                {
-                    setStand(true);
-                    roundResult = $"{player} choose stand";
                 }
             }
             setStand(false);

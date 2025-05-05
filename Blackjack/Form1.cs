@@ -4,8 +4,10 @@ namespace Blackjack
 {
     public partial class Form1 : Form
     {
-        private Deck deck = new Deck();
-        private int playerIndex = 0;
+        private Experience experience = new Experience();
+        private Shoe shoe = new Shoe();
+        private Deck? currentDeck = null;
+        private int playerIndex = 0; private bool deckShuffled = false;
         private bool divideCardInstance = false; private bool firstRoundPass = false; private bool dealerChoiseInstance = false; private bool resetInstance = false;
         private Card pulledCard; private Player? player1 = null; private Player? player2 = null; private Player? player3 = null; private Player? player4 = null;
         private Player dealer = new Player(true);
@@ -47,36 +49,45 @@ namespace Blackjack
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Card kaart = deck.pullCard();
-            label2.Show();
-            label2.Text = kaart.toString();
-            pulledCard = kaart;
-            divideCard();
-            if ((player1?.playerWon() ?? false) || (player2?.playerWon() ?? false) || (player3?.playerWon() ?? false) || (player4?.playerWon() ?? false) || (dealer?.playerWon() ?? false))
+            if (deckShuffled)
             {
-                newGame();
+                experience.setDealerPoints(1 , false);
+                Card kaart = currentDeck.pullCard();
+                label2.Show();
+                label2.Text = kaart.toString();
+                pulledCard = kaart;
+                divideCard();
+                if ((player1?.playerWon() ?? false) || (player2?.playerWon() ?? false) || (player3?.playerWon() ?? false) || (player4?.playerWon() ?? false) || (dealer?.playerWon() ?? false))
+                {
+                    newGame();
+                }
+                if (player1 != null && player1.playerLost())
+                {
+                    playerLost("player1");
+                }
+                else if (player2 != null && player2.playerLost())
+                {
+                    playerLost("player2");
+                }
+                else if (player3 != null && player3.playerLost())
+                {
+                    playerLost("player3");
+                }
+                else if (player4 != null && player4.playerLost())
+                {
+                    playerLost("player4");
+                }
+                else if (dealer != null && dealer.playerLost())
+                {
+                    playerLost("dealer");
+                    newGame();
+                }
             }
-            if (player1 != null && player1.playerLost())
+            else
             {
-                playerLost("player1");
+                experience.setDealerPoints(1, true);
             }
-            else if (player2 != null && player2.playerLost())
-            {
-                playerLost("player2");
-            }
-            else if (player3 != null && player3.playerLost())
-            {
-                playerLost("player3");
-            }
-            else if (player4 != null && player4.playerLost())
-            {
-                playerLost("player4");
-            }
-            else if (dealer != null && dealer.playerLost())
-            {
-                playerLost("dealer");
-                newGame();
-            }
+            label17.Text = $"Dealerpoints: {experience.getDealerPoints()}";
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -110,6 +121,7 @@ namespace Blackjack
             }
             else
             {
+                currentDeck = shoe.firstDeck();
                 Player playerFirst = new Player(false);
                 player1 = playerFirst;
                 Player playerSecond = new Player(false);
@@ -141,6 +153,7 @@ namespace Blackjack
             }
             else
             {
+                currentDeck = shoe.firstDeck();
                 Player playerFirst = new Player(false);
                 player1 = playerFirst;
                 pictureBox1.Show();
@@ -169,7 +182,7 @@ namespace Blackjack
                 dealerChoiseInstance = false;
                 playerIndex = 1;
                 button7.Hide(); button4.Hide(); button3.Hide();
-                button7.Text = "dealer"; button3.Text = "2"; button4.Text = "3"; 
+                button7.Text = "dealer"; button3.Text = "2"; button4.Text = "3";
                 roundPlayer();
             }
             else if (resetInstance)
@@ -178,6 +191,7 @@ namespace Blackjack
             }
             else
             {
+                currentDeck = shoe.firstDeck();
                 Player playerFirst = new Player(false);
                 player1 = playerFirst;
                 Player playerSecond = new Player(false);
@@ -207,6 +221,7 @@ namespace Blackjack
             }
             else
             {
+                currentDeck = shoe.firstDeck();
                 Player playerFirst = new Player(false);
                 player1 = playerFirst;
                 Player playerSecond = new Player(false);
@@ -244,7 +259,8 @@ namespace Blackjack
 
         private void button6_Click(object sender, EventArgs e)
         {
-            deck.shuffleDeck();
+            currentDeck.shuffleDeck();
+            deckShuffled = true;
         }
 
         private void label9_Click(object sender, EventArgs e)
@@ -278,7 +294,28 @@ namespace Blackjack
         }
         public void divideCard()
         {
-            button2.Show(); button3.Show(); button4.Show(); button5.Show(); button7.Show(); label9.Show();
+            if (player1 != null)
+            {
+                button2.Show();
+            }
+            if (player2 != null)
+            {
+                button3.Show();
+            }
+            if (player3 != null)
+            {
+                button4.Show();
+            }
+   
+            if (player4 != null)
+            {
+                button5.Show();
+            }
+            if (dealer != null)
+            {
+                button7.Show();
+            }
+            label9.Show();
             divideCardInstance = true;
         }
 
@@ -329,45 +366,53 @@ namespace Blackjack
 
         private void button8_Click(object sender, EventArgs e)
         {
-            if ((player1?.playerWon() ?? false) || (player2?.playerWon() ?? false) || (player3?.playerWon() ?? false) || (player4?.playerWon() ?? false) || (dealer?.playerWon() ?? false))
-            {
-                newGame();
-            }
-            if (player1 != null && player1.playerLost())
-            {
-                playerLost("player1");
-            }
-            else if (player2 != null && player2.playerLost())
-            {
-                playerLost("player2");
-            }
-            else if (player3 != null && player3.playerLost())
-            {
-                playerLost("player3");
-            }
-            else if (player4 != null && player4.playerLost())
-            {
-                playerLost("player4");
-            }
-            else if (dealer != null && dealer.playerLost())
-            {
-                playerLost("dealer");
-                newGame();
-            }
-            if (!firstRoundPass)
-            {
-                if (button8.Text == "Ja")
+            if (deckShuffled && (player1?.getAmountOfCards() == 2) || (player2?.getAmountOfCards() == 2) || (player3?.getAmountOfCards() == 2) || (player4?.getAmountOfCards() == 2) || (dealer?.getAmountOfCards() == 2)) {
+                experience.setDealerPoints(1, false);
+                if ((player1?.playerWon() ?? false) || (player2?.playerWon() ?? false) || (player3?.playerWon() ?? false) || (player4?.playerWon() ?? false) || (dealer?.playerWon() ?? false))
                 {
-                    firstRoundPass = true;
+                    newGame();
+                }
+                if (player1 != null && player1.playerLost())
+                {
+                    playerLost("player1");
+                }
+                else if (player2 != null && player2.playerLost())
+                {
+                    playerLost("player2");
+                }
+                else if (player3 != null && player3.playerLost())
+                {
+                    playerLost("player3");
+                }
+                else if (player4 != null && player4.playerLost())
+                {
+                    playerLost("player4");
+                }
+                else if (dealer != null && dealer.playerLost())
+                {
+                    playerLost("dealer");
+                    newGame();
+                }
+                if (!firstRoundPass)
+                {
+                    if (button8.Text == "Ja")
+                    {
+                        firstRoundPass = true;
+                        roundPlayer();
+                    }
+                    label15.Show();
+                    button8.Text = "Ja";
+                }
+                else
+                {
                     roundPlayer();
                 }
-                label15.Show();
-                button8.Text = "Ja";
             }
             else
             {
-                roundPlayer();
+                experience.setDealerPoints(1, true);
             }
+            label17.Text = $"Dealerpoints: {experience.getDealerPoints()}";
         }
         public void roundPlayer()
         {
@@ -432,12 +477,13 @@ namespace Blackjack
             button3.Show(); button4.Show();
             button3.Text = "New game";
             button4.Text = "Quit game";
+            button8.Text = "Volgende ronde";
             divideCardInstance = false;
             resetInstance = true;
             dealerChoiseInstance = false;
-            firstRoundPass = false;
+            firstRoundPass = false; deckShuffled = false;
             playerIndex = 0;
-            deck = new Deck();
+            currentDeck = shoe.firstDeck();
             player1 = null;
             player2 = null;
             player3 = null;
@@ -484,6 +530,11 @@ namespace Blackjack
         }
 
         private void pictureBox5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label17_Click(object sender, EventArgs e)
         {
 
         }

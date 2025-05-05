@@ -58,6 +58,7 @@
             button8 = new Button();
             label15 = new Label();
             label16 = new Label();
+            label17 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -352,12 +353,23 @@
             label16.TabIndex = 34;
             label16.Text = "label16";
             // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Location = new Point(12, 9);
+            label17.Name = "label17";
+            label17.Size = new Size(109, 20);
+            label17.TabIndex = 35;
+            label17.Text = "Dealerpoints: 0";
+            label17.Click += label17_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(0, 192, 0);
             ClientSize = new Size(1924, 953);
+            Controls.Add(label17);
             Controls.Add(label16);
             Controls.Add(label15);
             Controls.Add(button8);
@@ -430,5 +442,6 @@
         private Button button8;
         private Label label15;
         private Label label16;
+        private Label label17;
     }
 }
